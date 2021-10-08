@@ -1,15 +1,36 @@
 const Atendimento = require('../models/atendimentos')
+
 module.exports = app => {
 
-  /* Envia dados para o cliente   */
     app.get('/atendimentos', function (req, res) {
-        res.send('você está na rota de atendimentos')})
+      Atendimento.lista(res)
+      })
+
+     app.get('/atendimentos/:id', (req,res)=> {
+       const id = parseInt(req.params.id)
+
+       Atendimento.buscaPorID(id, res)
+       console.log(res.params)   
+         })
 
     app.post('/atendimentos', (req, res) => {
       const atendimento = req.body
 
-      Atendimento.adiciona(atendimento)
-      res.send('Post Atendimento')
+      Atendimento.adiciona(atendimento, res)
   })
+
+    app.patch('/atendimentos/:id', (req, res)=>{
+      const id = parseInt(req.params.id)
+      const valores = req.body
+
+      Atendimento.altera(id, valores, res)
+    })
+
+    app.delete('/atendimentos/:id', (req, res)=>{
+      const id = parseInt(req.params.id)
+
+      Atendimento.delete(id, res)
+    })
+
 }
 
